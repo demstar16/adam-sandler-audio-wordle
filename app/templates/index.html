@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div id='youtube-container'></div>
+    <div id='buttons'>
+        <button class="button" id="play-button">PLAY</button>
+        <button class="button" id="pause-button">PAUSE</button>
+    </div>
+    <div class="answer">
+        <select id="dropdown" onchange="selectOption()"></select>
+        <button onclick="submit()">SUBMIT</button>
+    </div>
+    <div id="result"></div>
+    <div class="images">    
+        <img src="{{ url_for('static', filename='images/adam.png') }}">
+        <img src="{{ url_for('static', filename='images/adam2.png') }}">
+    </div>
+{% endblock %}
