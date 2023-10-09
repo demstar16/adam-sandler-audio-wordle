@@ -50,7 +50,7 @@ def insert_record(user_id, date, score):
     todays_submissions = cursor.fetchall()
     if len(todays_submissions) < 1:
         sql_command = (
-            f"""INSERT INTO games_played(user_id, date, gameover, score) VALUES (
+            f"""INSERT INTO games_played(user_id, date, score) VALUES (
                 ?,
                 ?,
                 ?,
@@ -79,17 +79,11 @@ def get_records(user_id):
     )
     cursor = connection.cursor()
 
-    # gets list of all users' number wins, in desc order
-    cursor.execute(f"SELECT user_id, COUNT(win) FROM games_played WHERE win==1 GROUP BY user_id ORDER BY COUNT(win) DESC, AVG(attempts) ASC")
-    wins = cursor.fetchall()  
-
+    # gets list of top 10 users' scores, in desc order
+    cursor.execute(f"SELECT user_id, score FROM games_played ORDER BY score DESC LIMIT 10;") 
+    top10 = cursor.fetchall()
     # get number of games played by this user      
-    cursor.execute(f"SELECT COUNT(*) FROM games_played WHERE user_id==?", (user_id,))
-    games_played = cursor.fetchall()
+    cursor.execute(f"SELECT score FROM games_played WHERE user_id==?", (user_id,))
+    user_score = cursor.fetchall()
 
-
-    # gets count of games with x turns that given user has won
-    cursor.execute(f"SELECT attempts, COUNT(win) FROM games_played WHERE user_id==? AND win==1 GROUP BY attempts ORDER BY attempts ASC", (user_id,))
-    user_attempt_wincounts = cursor.fetchall()  
-
-    return wins, games_played, user_attempt_wincounts
+    return top10, user_score
