@@ -13,14 +13,11 @@
   <body>
     <div class="header">
       <h1> Guess the Adam Sandler Movie </h1>
-      <p>
-        Guess the Adam Sandler Movie given the audio of a song or scene from one of his movies.<br>
-        <span class="green">Press PLAY to begin! </span><br>
-        <span class="red"> You only have 3 ATTEMPTS </span>
-      </p>
+      {% block header %}{% endblock %}
     </div>
     {% block content %}{% endblock %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/cookies.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/youtubeAPI.js') }}"></script>
   </body>
 </html>

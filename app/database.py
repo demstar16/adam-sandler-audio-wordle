@@ -14,8 +14,7 @@ def create_table():
             id INTEGER PRIMARY KEY,
             user_id TEXT NOT NULL,
             date DATE NOT NULL,
-            win INTEGER NOT NULL,
-            attempts INTEGER
+            score INTEGER NOT NULL
         )"""
     )
 
@@ -24,7 +23,7 @@ def create_table():
     connection.commit()
 
 
-def insert_record(user_id, date, win, attempts):
+def insert_record(user_id, date, score):
     """Attempts to store data on a played game.  Will only allow 1 insert per 
     user_id per day to avoid manipualting user stats.
 
@@ -37,8 +36,7 @@ def insert_record(user_id, date, win, attempts):
     Returns:
     int: last row id
     """
-    if win == 0:
-        attempts = None
+
     
     connection = sqlite3.connect(
         "database.db",
@@ -52,7 +50,7 @@ def insert_record(user_id, date, win, attempts):
     todays_submissions = cursor.fetchall()
     if len(todays_submissions) < 1:
         sql_command = (
-            f"""INSERT INTO games_played(user_id, date, win, attempts) VALUES (
+            f"""INSERT INTO games_played(user_id, date, gameover, score) VALUES (
                 ?,
                 ?,
                 ?,
@@ -60,7 +58,7 @@ def insert_record(user_id, date, win, attempts):
             )
             """
         )
-        cursor.execute(sql_command, (user_id, date, win, attempts))
+        cursor.execute(sql_command, (user_id, date, score))
         connection.commit()
     return cursor.lastrowid
 

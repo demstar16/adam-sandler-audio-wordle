@@ -1,6 +1,17 @@
 {% extends "base.html" %}
 
+{% block header %}
+<p>
+    Guess the Adam Sandler Movie given the audio of a song or scene from one of his movies.<br>
+    <span class="green">Press PLAY to begin! </span><br>
+    <span class="red"> You only have 3 ATTEMPTS </span>
+</p>
+{% endblock %}
+
 {% block content %}
+    <script>
+        var solutionString = "{{ solutionString }}";
+    </script>
     <div id='youtube-container'></div>
     <div id='buttons'>
         <button class="button" id="play-button">PLAY</button>
@@ -8,9 +19,14 @@
     </div>
     <div class="answer">
         <select id="dropdown" onchange="selectOption()"></select>
-        <button onclick="submit()">SUBMIT</button>
+        <button onclick="submit()" action="/" method="POST">SUBMIT</button>
     </div>
     <div id="result"></div>
+    <div class="button-container">
+        <a href="leaderboard">
+            <button>Go to Leaderboard</button>
+        </a>
+    </div>
     <div class="images">    
         <img src="{{ url_for('static', filename='images/adam.png') }}">
         <img src="{{ url_for('static', filename='images/adam2.png') }}">

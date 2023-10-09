@@ -13,7 +13,7 @@ audioData = [
     ['https://www.youtube.com/embed/GHZSYBkKec4?enablejsapi=1', 'Grown Ups'],
     ['https://www.youtube.com/embed/MV4zHRnIUpU?enablejsapi=1', 'Anger Management'],
     ['https://www.youtube.com/embed/LqXS0XYHB-Y?enablejsapi=1', 'The Wedding Singer'],
-]
+];
 
 movies = [
     `Don't Mess with the Zohan`,
@@ -26,11 +26,15 @@ movies = [
     `Click`,
     `Happy Gilmore`,
     `Hubie Halloween`
-]
+];
 
-let rawIndex = Math.random() * (audioData.length - 1) // Random number between 0 - (Length of Array - 1)
-let index = Math.floor(rawIndex)
-
+let rawIndex = Math.random() * (audioData.length - 1); // Random number between 0 - (Length of Array - 1)
+let index = Math.floor(rawIndex);
+let guesses = 0;
+let gameover = false;
+let points = 0;
+// global variable for the player
+var player;
 
 let guessAudio = document.getElementById('youtube-container');
 let iframe = document.createElement('iframe');
@@ -42,8 +46,14 @@ iframe.allowfullscreen = true;
 iframe.src = audioData[index][0];
 guessAudio.appendChild(iframe)
 
-// global variable for the player
-var player;
+// Populate the dropdown menu for all the movies
+let dropdown = document.getElementById('dropdown');
+
+movies.forEach(function(item){
+    let option = document.createElement('option');
+    option.innerText = item;
+    dropdown.appendChild(option);
+})
 
 // this function gets called when API is ready to use
 function onYouTubePlayerAPIReady() {
@@ -75,36 +85,56 @@ tag.src = "https://www.youtube.com/player_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-// Populate the dropdown menu for all the movies
-let dropdown = document.getElementById('dropdown');
-
-movies.forEach(function(item){
-    let option = document.createElement('option');
-    option.innerText = item;
-    dropdown.appendChild(option);
-})
-
 function submit() 
 {
+    
+    guesses += 1;
+    
     // get the index of the selected option
     let selectedIndex = dropdown.selectedIndex;
     // get a selected option and text value using the text property
     let selectedValue = dropdown.options[selectedIndex].text;
-
+    
     let result = document.getElementById('result');
     result.innerHTML = null;
     let p = document.createElement('p');
-    if (selectedValue == audioData[index][1]) 
+    let text;
+
+    if (gameover) 
     {
-        let text = 'You`re RIGHT! Gotta respect that!';
-        p.innerText = text;
-        result.appendChild(p);
+        text = "You're done for the day... come back tomorrow"
+    }
+    else if (selectedValue == audioData[index][1]) 
+    {
+        gameover = true;
+        if (guesses == 1)
+        {
+            points = 1000;
+        }
+        else if ( guesses == 2)
+        {
+            points = 500;
+        }
+        else if (guesses == 3)
+        {
+            points = 250;
+        }
+        console.log(points)
+        text = '<p>You`re RIGHT! Gotta respect that!<br>You earned <b>' + points + '</b> points.</p>';
     }
     else
     {
-        let text = 'Nice Try Pal';
-        p.innerText = text;
-        result.appendChild(p);
+        if (guesses == 3) 
+        {
+            gameover = true;
+            text = '<p>That`s GAMEOVER for today</p>';
+        }
+        else 
+        {
+            text = '<p>Try Again Pal</p>';
+        }
     }
+    p.innerHTML = text;
+    result.appendChild(p);
     player.pauseVideo();
 }

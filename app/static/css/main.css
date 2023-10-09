@@ -112,3 +112,7 @@ iframe {
 .images img {
 	max-width: 600px;
 }
+
+.button-container {
+	z-index: 2;
+}

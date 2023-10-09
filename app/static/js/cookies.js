@@ -49,14 +49,3 @@ function toggleHighContrastMode() {
   localStorage.setItem("highContrast", !getHighContrastMode());
 }
 
-/**
- * On document load, looks to call checkUserCookie() function to check to see if
- * user_id exists
- */
-document.addEventListener("DOMContentLoaded", () => {
-  checkUserCookie();
-  let statsbutton = document.getElementById("statsbutton");
-  statsbutton.onclick = () => {
-    location.href = "/stats/" + user_id;
-  };
-});
