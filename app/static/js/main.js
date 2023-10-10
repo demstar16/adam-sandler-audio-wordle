@@ -28,8 +28,9 @@ movies = [
     `Hubie Halloween`
 ];
 
-let rawIndex = Math.random() * (audioData.length - 1); // Random number between 0 - (Length of Array - 1)
-let index = Math.floor(rawIndex);
+let indexDiv = document.getElementById('index');
+let index = indexDiv.getAttribute("index");
+console.log(index)
 let guesses = 0;
 let gameover = false;
 let points = 0;
@@ -87,7 +88,6 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 function submit() 
 {
-    
     guesses += 1;
     
     // get the index of the selected option
@@ -106,28 +106,28 @@ function submit()
     }
     else if (selectedValue == audioData[index][1]) 
     {
-        gameover = true;
         if (guesses == 1)
         {
-            points = 1000;
+            points = 100;
         }
         else if ( guesses == 2)
         {
-            points = 500;
+            points = 50;
         }
         else if (guesses == 3)
         {
-            points = 250;
+            points = 25;
         }
-        console.log(points)
+        console.log(points);
         text = '<p>You`re RIGHT! Gotta respect that!<br>You earned <b>' + points + '</b> points.</p>';
+        sendStats(points);
     }
     else
     {
         if (guesses == 3) 
         {
-            gameover = true;
             text = '<p>That`s GAMEOVER for today</p>';
+            sendStats(points);
         }
         else 
         {
@@ -138,3 +138,23 @@ function submit()
     result.appendChild(p);
     player.pauseVideo();
 }
+
+function sendStats(points) {
+    gameover = true;
+    let request = new XMLHttpRequest();
+    request.open(
+      "GET",
+      "/api/submitstats?user_id=" +
+        user_id +
+        "&points=" +
+        points
+    );
+    request.send();
+    request.onload = () => {
+      if (request.status === 200) {
+        console.log(JSON.parse(request.response));
+      } else {
+        console.log("Error: " + request.status + " " + request.statusText);
+      }
+    };
+  }
