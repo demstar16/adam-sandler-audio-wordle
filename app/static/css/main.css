@@ -116,3 +116,30 @@ iframe {
 .button-container {
 	z-index: 2;
 }
+
+#data {
+	display: none;
+}
+
+
+#top10 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#top10 .score_row {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin: 0 10px;
+}
+
+.yourScore {
+	display: flex;
+	justify-content: center;
+}
+
+.yourScore p {
+	margin-left: 10px;
+}
