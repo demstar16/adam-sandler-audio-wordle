@@ -9,9 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <script>
-        var solutionString = "{{ solutionString }}";
-    </script>
+    <div id="index" index={{index}}></div>
     <div id='youtube-container'></div>
     <div id='buttons'>
         <button class="button" id="play-button">PLAY</button>
@@ -19,13 +17,11 @@
     </div>
     <div class="answer">
         <select id="dropdown" onchange="selectOption()"></select>
-        <button onclick="submit()" action="/" method="POST">SUBMIT</button>
+        <button onclick="submit()">SUBMIT</button>
     </div>
     <div id="result"></div>
     <div class="button-container">
-        <a href="leaderboard">
-            <button>Go to Leaderboard</button>
-        </a>
+        <button id="leaderboard-button">Go to Leaderboard</button>
     </div>
     <div class="images">    
         <img src="{{ url_for('static', filename='images/adam.png') }}">
