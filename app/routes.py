@@ -1,20 +1,62 @@
-from flask import render_template, url_for, redirect, request
+from flask import render_template, jsonify, request
 from app import app
 from app import database
 
+from datetime import datetime, date
+import random
 
 
 TIMEZONE = 'Australia/Perth' # set this to None to use machine timezone
 
-@app.route('/', methods=['POST', 'GET'])
-@app.route('/index', methods=['POST', 'GET'])
+@app.route('/')
+@app.route('/index')
 def index():
-    # if request.method == 'POST':
-    #     if done:
-    #         return redirect('/leaderboard')
+    if TIMEZONE:
+        random.seed(datetime.now().strftime('%Y-%m-%d'))
+    else:
+        random.seed(datetime.today().strftime('%Y-%m-%d'))
 
-    return render_template('index.html');
+    # Generate a random number within the specified range
+    random_number = random.randint(0, 13)
+    
+    render_args = {
+        "index":random_number
+    }
+    return render_template('index.html', **render_args);
 
-@app.route('/leaderboard')
-def leaderboard():
-    return render_template('leaderboard.html');
+@app.route('/leaderboard/<user_id>')
+def leaderboard(user_id):
+    
+    top10_raw, userScore = database.get_records(user_id)
+    top10 = []
+    
+    for record in top10_raw:
+        top10.append([record[0], record[1]])
+    
+    render_args = {   
+       "top10":top10,
+       "user_score":userScore
+    }
+    
+    return render_template('leaderboard.html', **render_args)
+
+
+@app.route('/api/submitstats')
+def submitstats():
+    user_id = request.args.get("user_id")
+    points = request.args.get("points")
+    print(user_id, points)
+    response = {"succeeded":0}
+    if None not in (user_id, points):
+        if TIMEZONE:
+            today = datetime.now().strftime('%Y-%m-%d')
+        else:
+            today = datetime.today().strftime('%Y-%m-%d')
+        try:
+            float(user_id)
+            response["succeeded"] = database.update_record(user_id, today, int(points))
+        except ValueError:
+            print("Attmpted SQL injection!")
+    print(response)
+    return jsonify(response)
+    
