@@ -41,11 +41,16 @@ function changeID() {
   }
 }
 
-function getHighContrastMode() {
-  return localStorage.getItem("highContrast") === "true";
-}
+/**
+ * On document load, looks to call checkUserCookie() function to check to see if
+ * user_id exists
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  checkUserCookie();
+  let leaderboardbutton = document.getElementById("leaderboard-button");
+  leaderboardbutton.onclick = () => {
+    location.href = "/leaderboard/" + user_id;
+  };
+});
 
-function toggleHighContrastMode() {
-  localStorage.setItem("highContrast", !getHighContrastMode());
-}
 
