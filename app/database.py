@@ -21,7 +21,7 @@ def create_table():
     connection.commit()
 
 
-def update_record(user_id, date, score):
+def update_record(user_id, date, points):
     """Attempts to update an existing record for a user's game.
 
     Parameters:
@@ -39,24 +39,39 @@ def update_record(user_id, date, score):
     )
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM users WHERE user_id=? AND date=?", (user_id, date))
+    cursor.execute("SELECT score FROM users WHERE user_id=? AND date=?", (user_id, date))
+    current_score = cursor.fetchone()
+    if current_score is not None:
+        current_score = current_score[0]
+        new_score = current_score + points
+    else:
+        new_score = points
+    
+    cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,))
+    user_exist = cursor.fetchall()
+    print(user_exist)
+    if user_exist is not None:
+        cursor.execute("SELECT * FROM users WHERE user_id=? AND date=?", (user_id, date))
 
-    # Only allow 1 submission per day
-    todays_submissions = cursor.fetchall()
-    if len(todays_submissions) < 1:
-        # A record already exists for this user and date, so update it
-        sql_command = (
-            """UPDATE users SET score=? WHERE user_id=? AND date=?"""
-        )
-        cursor.execute(sql_command, (score, user_id, date))
-        connection.commit()
-        return True
+        # Only allow 1 submission per day
+        todays_submissions = cursor.fetchall()
+        if len(todays_submissions) < 1:
+            #
+            sql_command = (
+                """UPDATE users SET score=? AND date=? WHERE user_id=?"""
+            )
+            cursor.execute(sql_command, (new_score, date, user_id))
+            connection.commit()
+            return True
+        else:
+            print("Submitted Today already")
+            return False
     else:
         # No existing record found, so insert a new one
         sql_command = (
             """INSERT INTO users(user_id, date, score) VALUES (?, ?, ?)"""
         )
-        cursor.execute(sql_command, (user_id, date, score))
+        cursor.execute(sql_command, (user_id, date, points))
         connection.commit()
         return False
 
@@ -85,6 +100,7 @@ def get_records(user_id):
     # get user score    
     cursor.execute(f"SELECT score FROM users WHERE user_id==?", (user_id,))
     user_score_raw = cursor.fetchall()
+    print(user_score_raw)
     user_score = user_score_raw[0][0]
 
     return top10, user_score
