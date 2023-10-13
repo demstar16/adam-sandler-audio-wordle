@@ -49,8 +49,8 @@ def update_record(user_id, date, points):
     
     cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,))
     user_exist = cursor.fetchall()
-    print(user_exist)
-    if user_exist is not None:
+    print("USER EXISTS", user_exist)
+    if user_exist != []:
         cursor.execute("SELECT * FROM users WHERE user_id=? AND date=?", (user_id, date))
 
         # Only allow 1 submission per day
@@ -101,7 +101,7 @@ def get_records(user_id):
     cursor.execute(f"SELECT score FROM users WHERE user_id==?", (user_id,))
     user_score_raw = cursor.fetchall()
     print(user_score_raw)
-    if user_score_raw is not None:
+    if user_score_raw != []:
         user_score = user_score_raw[0][0]
     else:
         user_score = 0
