@@ -101,6 +101,10 @@ def get_records(user_id):
     cursor.execute(f"SELECT score FROM users WHERE user_id==?", (user_id,))
     user_score_raw = cursor.fetchall()
     print(user_score_raw)
-    user_score = user_score_raw[0][0]
+    if user_score_raw is not None:
+        user_score = user_score_raw[0][0]
+    else:
+        user_score = 0
+    
 
     return top10, user_score
