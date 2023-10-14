@@ -43,6 +43,7 @@ body {
 p {
 	margin: 10px 0;
 	font-family: MyFont;
+	text-align: center;
 }
 
 #buttons {
