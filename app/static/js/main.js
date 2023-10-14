@@ -89,83 +89,96 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 function submit() 
 {
     guesses += 1;
-    
-    // get the index of the selected option
-    let selectedIndex = dropdown.selectedIndex;
-    // get a selected option and text value using the text property
-    let selectedValue = dropdown.options[selectedIndex].text;
-    
-    let result = document.getElementById('result');
-    result.innerHTML = null;
-    let p = document.createElement('p');
-    let text;
+    checkSubmissions().then((gameover) => 
+    // This code will execute after the response is received.
+    {
+        // audio for button click
+        let sound = document.getElementById('myAudio');
 
-    if (gameover) 
-    {
-        text = "You're done for the day... come back tomorrow"
-    }
-    else if (selectedValue == audioData[index][1]) 
-    {
-        if (guesses == 1)
+        // get the index of the selected option
+        let selectedIndex = dropdown.selectedIndex;
+        // get a selected option and text value using the text property
+        let selectedValue = dropdown.options[selectedIndex].text;
+        
+        let result = document.getElementById('result');
+        result.innerHTML = null;
+        let p = document.createElement('p');
+        let text;
+        
+        if (gameover) 
         {
-            points = 100;
+            sound.src = "static/audio/done.mp3";
+            text = "You're done for the day... come back tomorrow"
         }
-        else if ( guesses == 2)
+        else if (selectedValue == audioData[index][1]) 
         {
-            points = 50;
-        }
-        else if (guesses == 3)
-        {
-            points = 25;
-        }
-        console.log(points);
-        text = '<p>You`re RIGHT! Gotta respect that!<br>You earned <b>' + points + '</b> points.</p>';
-        sendStats(points);
-    }
-    else
-    {
-        if (guesses == 3) 
-        {
-            text = '<p>That`s GAMEOVER for today</p>';
+            if (guesses == 1)
+            {
+                points = 100;
+            }
+            else if ( guesses == 2)
+            {
+                points = 50;
+            }
+            else if (guesses == 3)
+            {
+                points = 25;
+            }
+            sound.src = "static/audio/win.mp3";
+            text = '<p>You`re RIGHT! Gotta respect that!<br>You earned <b>' + points + '</b> points.</p>';
             sendStats(points);
         }
-        else 
+        else
         {
-            text = '<p>Try Again Pal</p>';
+            if (guesses == 3) 
+            {
+                sound.src = "static/audio/loss.mp3";
+                text = '<p>That`s GAMEOVER for today</p>';
+                sendStats(points);
+            }
+            else 
+            {
+                sound.src = "static/audio/try-again.mp3";
+                text = '<p>Try Again Pal</p>';
+            }
         }
-    }
-    p.innerHTML = text;
-    result.appendChild(p);
-    player.pauseVideo();
+        p.innerHTML = text;
+        result.appendChild(p);
+        player.pauseVideo();
+        sound.load();
+        sound.play();
+    }).catch((error) => {
+        console.error(error); // Handle errors
+    });
 }
 
 function sendStats(points) {
     gameover = true;
     let request = new XMLHttpRequest();
     request.open(
-      "GET",
-      "/api/submitstats?user_id=" +
+        "GET",
+        "/api/submitstats?user_id=" +
         user_id +
         "&points=" +
         points
-    );
-    request.send();
-    request.onload = () => {
-      if (request.status === 200) {
-        console.log(JSON.parse(request.response));
-      } else {
-        console.log("Error: " + request.status + " " + request.statusText);
-      }
-    };
-  }
-
-  function setUsername() {
+        );
+        request.send();
+        request.onload = () => {
+            if (request.status === 200) {
+                console.log(JSON.parse(request.response));
+            } else {
+                console.log("Error: " + request.status + " " + request.statusText);
+            }
+        };
+    }
+    
+    function setUsername() {
     let username = prompt("Type your new username: ")
     if (username != null || username != "") {        
         let request = new XMLHttpRequest();
         request.open(
-          "GET",
-          "/api/setusername?user_id=" +
+            "GET",
+            "/api/setusername?user_id=" +
             user_id +
             "&username=" +
             username
@@ -180,3 +193,27 @@ function sendStats(points) {
         }; 
     }
   }
+
+function checkSubmissions(){
+    return new Promise((resolve, reject) => {
+        let request = new XMLHttpRequest();
+        request.open(
+          "GET",
+          "/api/checksubmissions?user_id=" + user_id
+        );
+        request.send();
+        request.onload = () => {
+          if (request.status === 200) {
+            console.log(request.response);
+            if (request.response == 'True') {
+              resolve(true); // Resolve the Promise with true
+            } else {
+              resolve(false); // Resolve the Promise with false
+            }
+          } else {
+            console.error("Error: " + request.status + " " + request.statusText);
+            reject("Error: " + request.status + " " + request.statusText); // Reject the Promise in case of an error
+          }
+        };
+      });
+    }
