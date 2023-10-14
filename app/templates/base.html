@@ -14,6 +14,7 @@
     <div class="header">
       <h1> Guess the Adam Sandler Movie </h1>
       {% block header %}{% endblock %}
+      <button onclick="setUsername()">Set Username</button>
     </div>
     {% block content %}{% endblock %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
