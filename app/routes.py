@@ -35,7 +35,7 @@ def leaderboard(user_id):
     
     render_args = {   
        "top10":top10,
-       "user_score":userScore
+       "user_stats":userScore
     }
     
     return render_template('leaderboard.html', **render_args)
@@ -60,3 +60,14 @@ def submitstats():
     print(response)
     return jsonify(response)
     
+@app.route('/api/setusername')
+def setusername():
+    user_id = request.args.get("user_id")
+    username = request.args.get("username")
+    response = {"succeeded":0}
+    
+    print(user_id, username)
+    
+    float(user_id)
+    response["succeeded"] = database.set_username(user_id, username)
+    return jsonify(response)
