@@ -5,7 +5,9 @@
 {% endblock %}
 {% block content %}
 <div class="leaderboard">
-    <div id="user_score" userScore={{user_score}}></div>
+    <div id="user_stats">
+        <div id="data1">{{user_stats}}</div>
+    </div>
     <div id="top10">
         <h1 style="align-self: center;">The TOP 10</h1>
         <div id="data">{{top10}}</div>
