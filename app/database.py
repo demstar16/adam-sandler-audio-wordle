@@ -13,6 +13,7 @@ def create_table():
         """CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             user_id TEXT NOT NULL,
+            username TEXT,
             date DATE NOT NULL,
             score INTEGER NOT NULL
         )"""
@@ -94,7 +95,7 @@ def get_records(user_id):
     cursor = connection.cursor()
 
     # gets list of top 10 users' scores, in desc order
-    cursor.execute(f"SELECT user_id, score FROM users ORDER BY score DESC LIMIT 10;") 
+    cursor.execute(f"SELECT user_id, username, score FROM users ORDER BY score DESC LIMIT 10;") 
     top10 = cursor.fetchall()
     
     # get user score    

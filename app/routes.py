@@ -31,7 +31,7 @@ def leaderboard(user_id):
     top10 = []
     
     for record in top10_raw:
-        top10.append([record[0], record[1]])
+        top10.append([record[0], record[1], record[2]])
     
     render_args = {   
        "top10":top10,

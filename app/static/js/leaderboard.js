@@ -7,9 +7,10 @@
     user_score.innerText = user_score_div.getAttribute('userScore');
 
     let top10InvalidString = dummy.textContent;
+    console.log(top10InvalidString);
     let top10ValidString = top10InvalidString.replace(/'/g, '"');
+    top10ValidString = top10ValidString.replace(/None/g, 'null');
     let top10 = JSON.parse(top10ValidString);
-    console.log(top10);
 
     let text = document.createElement('p');
     text.innerText = "Your Score: ";
