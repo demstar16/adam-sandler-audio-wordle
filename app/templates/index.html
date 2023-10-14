@@ -12,16 +12,19 @@
     <div id="index" index={{index}}></div>
     <div id='youtube-container'></div>
     <div id='buttons'>
-        <button class="button" id="play-button">PLAY</button>
-        <button class="button" id="pause-button">PAUSE</button>
+        <button class="yt-button" id="play-button">PLAY</button>
+        <button class="yt-button" id="pause-button">PAUSE</button>
     </div>
     <div class="answer">
         <select id="dropdown" onchange="selectOption()"></select>
-        <button onclick="submit()">SUBMIT</button>
+        <audio id="myAudio">
+            <source src="{{ url_for('static', filename='audio/win.mp3') }}" type="audio/mpeg">
+        </audio>
+        <button  id='submit-button' class='button' onclick="submit()">SUBMIT</button>
     </div>
     <div id="result"></div>
     <div class="button-container">
-        <button id="leaderboard-button">Go to Leaderboard</button>
+        <button  class='button' id="leaderboard-button">Go to Leaderboard</button>
     </div>
     <div class="images">    
         <img src="{{ url_for('static', filename='images/adam.png') }}">

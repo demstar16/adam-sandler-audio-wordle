@@ -16,8 +16,12 @@
 
 <div class="button-container">
     <a href="/index">
-        <button>Return to Home Page</button>
+        <button id='home-button' class='button'>Return to Home Page</button>
     </a>
+</div>
+<div class="images">    
+    <img src="{{ url_for('static', filename='images/adam3.png') }}">
+    <img id='wedding-singer-img' src="{{ url_for('static', filename='images/adam4.png') }}">
 </div>
 <script src="{{ url_for('static', filename='js/leaderboard.js') }}"></script>
 {% endblock %}

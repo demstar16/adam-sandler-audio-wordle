@@ -12,11 +12,11 @@
 
   <body>
     <div class="header">
-      <h1> Guess the Adam Sandler Movie </h1>
+      <h1> Adam Sandler Wordle </h1>
       {% block header %}{% endblock %}
-      <button onclick="setUsername()">Set Username</button>
     </div>
     {% block content %}{% endblock %}
+    <button id='username-button' class='button' onclick="setUsername()">Set Username</button>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/cookies.js') }}"></script>
   </body>
