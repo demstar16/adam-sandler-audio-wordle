@@ -74,7 +74,7 @@ def update_record(user_id, date, points):
         )
         cursor.execute(sql_command, (user_id, date, points))
         connection.commit()
-        return False
+        return True
 
 
 def get_records(user_id):
@@ -99,13 +99,22 @@ def get_records(user_id):
     top10 = cursor.fetchall()
     
     # get user score    
-    cursor.execute(f"SELECT score FROM users WHERE user_id==?", (user_id,))
-    user_score_raw = cursor.fetchall()
-    print(user_score_raw)
-    if user_score_raw != []:
-        user_score = user_score_raw[0][0]
-    else:
-        user_score = 0
+    cursor.execute(f"SELECT user_id, username, score FROM users WHERE user_id==?", (user_id,))
+    user_stats = cursor.fetchall()
+    print(user_stats)
     
+    return top10, user_stats
 
-    return top10, user_score
+def set_username(user_id, username):
+    """
+    
+    """
+    connection = sqlite3.connect(
+        "database.db",
+        detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+    )
+    cursor = connection.cursor()
+    
+    cursor.execute(f"UPDATE users SET username=? WHERE user_id=?", (username, user_id))
+    connection.commit()
+    return True
