@@ -158,3 +158,25 @@ function sendStats(points) {
       }
     };
   }
+
+  function setUsername() {
+    let username = prompt("Type your new username: ")
+    if (username != null || username != "") {        
+        let request = new XMLHttpRequest();
+        request.open(
+          "GET",
+          "/api/setusername?user_id=" +
+            user_id +
+            "&username=" +
+            username
+        );
+        request.send();
+        request.onload = () => {
+          if (request.status === 200) {
+            console.log(JSON.parse(request.response));
+          } else {
+            console.log("Error: " + request.status + " " + request.statusText);
+          }
+        }; 
+    }
+  }
