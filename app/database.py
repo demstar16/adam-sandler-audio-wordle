@@ -38,7 +38,7 @@ def update_record(user_id, date, points):
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT score FROM users WHERE user_id=? AND date=?", (user_id, date)
+        "SELECT score FROM users WHERE user_id=?", (user_id,)
     )
     current_score = cursor.fetchone()
     if current_score is not None:
