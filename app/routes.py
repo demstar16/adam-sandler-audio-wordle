@@ -72,16 +72,16 @@ def setusername():
     response["succeeded"] = database.set_username(user_id, username)
     return jsonify(response)
 
-@app.route('/api/checksubmissions')
-def checksubmissions():
-    user_id = request.args.get("user_id")
-    response = False
+# @app.route('/api/checksubmissions')
+# def checksubmissions():
+#     user_id = request.args.get("user_id")
+#     response = False
     
-    if TIMEZONE:
-        today = datetime.now().strftime('%Y-%m-%d')
-    else:
-        today = datetime.today().strftime('%Y-%m-%d')
-    float(user_id)
-    response = database.check_submissions(user_id, today)
-    print(response)
-    return str(response)
+#     if TIMEZONE:
+#         today = datetime.now().strftime('%Y-%m-%d')
+#     else:
+#         today = datetime.today().strftime('%Y-%m-%d')
+#     float(user_id)
+#     response = database.check_submissions(user_id, today)
+#     print(response)
+#     return str(response)

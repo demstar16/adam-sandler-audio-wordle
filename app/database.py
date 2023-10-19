@@ -41,15 +41,18 @@ def update_record(user_id, date, points):
         "SELECT score FROM users WHERE user_id=?", (user_id,)
     )
     current_score = cursor.fetchone()
-    if current_score is not None:
+    if current_score != []:
+        print(f"current score: {current_score}. current_score[0]: {current_score[0]}. points: {points}")
         current_score = current_score[0]
         new_score = current_score + points
+        print(f"new_score: {new_score}")
     else:
         new_score = points
 
     cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,))
     user_exist = cursor.fetchall()
-    print("USER EXISTS", user_exist)
+    print(f"user_exist >> {user_exist}")
+
     if user_exist != []:
         cursor.execute(
             "SELECT * FROM users WHERE user_id=? AND date=?", (user_id, date)
@@ -59,9 +62,9 @@ def update_record(user_id, date, points):
         todays_submissions = cursor.fetchall()
         if len(todays_submissions) < 1:
             #
-            sql_command = """UPDATE users SET score=? AND date=? WHERE user_id=?"""
-            cursor.execute(sql_command, (new_score, date, user_id))
+            cursor.execute("""UPDATE users SET score=?, date=? WHERE user_id=?""", (new_score, date, user_id))
             connection.commit()
+            print("submitted and updated")
             return True
         else:
             print("Submitted Today already")
@@ -71,6 +74,7 @@ def update_record(user_id, date, points):
         sql_command = """INSERT INTO users(user_id, date, score) VALUES (?, ?, ?)"""
         cursor.execute(sql_command, (user_id, date, points))
         connection.commit()
+        print("submitted and inserted")
         return True
 
 
@@ -118,18 +122,18 @@ def set_username(user_id, username):
     return True
 
 
-def check_submissions(user_id, date):
-    connection = sqlite3.connect(
-        "database.db", detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
-    )
-    cursor = connection.cursor()
+# def check_submissions(user_id, date):
+#     connection = sqlite3.connect(
+#         "database.db", detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+#     )
+#     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM users WHERE user_id=? AND date=?", (user_id, date))
+#     cursor.execute("SELECT * FROM users WHERE user_id=? AND date=?", (user_id, date))
 
-    # Only allow 1 submission per day
-    todays_submissions = cursor.fetchall()
+#     # Only allow 1 submission per day
+#     todays_submissions = cursor.fetchall()
     
-    if len(todays_submissions) < 1:
-        return False
-    else:
-        return True
+#     if len(todays_submissions) < 1:
+#         return False
+#     else:
+#         return True
