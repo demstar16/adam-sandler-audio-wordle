@@ -5,6 +5,7 @@ This file is not my code.
 */
 
 var user_id;
+var played_today;
 
 /**
  * Checks if user_id exists already, creates one if not
@@ -15,6 +16,20 @@ function checkUserCookie() {
     console.log("Welcome back! Your user_id is: " + user_id);
   } else {
     createUserID();
+  }
+}
+
+function checkTodaySubmission() {
+  let today = new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate());
+  console.log(today)
+  console.log(localStorage.getItem("last_game"))
+  if (localStorage.getItem("last_game") == today)
+  {
+    played_today = true;
+  }
+  else 
+  {
+    played_today = false;
   }
 }
 
@@ -47,6 +62,7 @@ function changeID() {
  */
 document.addEventListener("DOMContentLoaded", () => {
   checkUserCookie();
+  checkTodaySubmission();
   let leaderboardbutton = document.getElementById("leaderboard-button");
   leaderboardbutton.onclick = () => {
     location.href = "/leaderboard/" + user_id;
