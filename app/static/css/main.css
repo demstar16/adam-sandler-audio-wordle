@@ -114,7 +114,7 @@ iframe {
 
 .images {
 	position: absolute;
-	margin-top: 150px;
+	margin-top: 200px;
 	display: flex;
 	justify-content: space-between;
 	z-index: 0;
@@ -141,15 +141,16 @@ iframe {
 }
 
 
-#top10 {
+.leaderboard {
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	background-color: white;
-	padding: 15px;
+	padding: 20px 30px;
 	border-radius: 40px;
 	border: 1px solid black;
+	z-index: 3;
 }
 
 #top10 .score_row {
@@ -161,8 +162,7 @@ iframe {
 
 #top10 h1 {
 	font-family: Title;
-	text-decoration: underline;
-	color: rgb(231, 218, 34);
+	color: rgb(16, 68, 255);
 }
 
 .yourScore {
@@ -212,6 +212,75 @@ iframe {
 	padding: 10px;
 }
 
-#top10 {
-	z-index: 3;
+#background,
+#mobile-background {
+	position: fixed;
+	z-index: 0;
+	overflow: hidden;
+	background-size: cover;
+	background-position: center center;
 }
+
+#mobile-background  {
+	display: none;
+}
+
+.header h1 {
+	color: white;
+	margin: 0;
+}
+
+.header p {
+	background-color: white;
+	border-radius: 60px;
+	padding: 20px 40px;
+	font-weight: 700;
+	font-size: 18px;
+}
+
+.page-content {
+	margin-top: 50px;
+	position: relative;
+	z-index: 1;
+	background-color: rgba(255, 255, 255, 0.445);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40px 80px;
+	border-radius: 60px;
+}
+
+@media (max-width: 500px) {
+	#background {
+	  display: none;
+	}
+
+	#mobile-background {
+		display: block;
+	}
+
+	.images {
+		display: none;
+	}
+
+	.page-content {
+		padding: 20px 30px;
+		margin-top: 20px;
+	}
+
+	.header h1 {
+		font-size: 25px;
+		width: fit-content;
+	}
+
+	.header p {
+		font-size: 12px;
+		padding: 10px 20px;
+		width:80%;
+	}
+
+	.answer {
+		display: flex;
+		flex-direction: column;
+	}
+  }
