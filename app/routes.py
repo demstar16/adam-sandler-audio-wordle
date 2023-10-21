@@ -17,7 +17,7 @@ def index():
         random.seed(datetime.today().strftime('%Y-%m-%d'))
 
     # Generate a random number within the specified range
-    random_number = random.randint(0, 13)
+    random_number = random.randint(0, 31)
     
     render_args = {
         "index":random_number
