@@ -29,7 +29,7 @@ def leaderboard(user_id):
     
     top10_raw, userScore = database.get_records(user_id)
     top10 = []
-    
+    print(f"User Score: {userScore}")
     for record in top10_raw:
         top10.append([record[0], record[1], record[2]])
     
@@ -72,16 +72,3 @@ def setusername():
     response["succeeded"] = database.set_username(user_id, username)
     return jsonify(response)
 
-# @app.route('/api/checksubmissions')
-# def checksubmissions():
-#     user_id = request.args.get("user_id")
-#     response = False
-    
-#     if TIMEZONE:
-#         today = datetime.now().strftime('%Y-%m-%d')
-#     else:
-#         today = datetime.today().strftime('%Y-%m-%d')
-#     float(user_id)
-#     response = database.check_submissions(user_id, today)
-#     print(response)
-#     return str(response)
