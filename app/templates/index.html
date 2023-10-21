@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div id="index" index={{index}}></div>
     <div id='youtube-container'></div>
     <div id='buttons'>
@@ -26,8 +27,10 @@
     <div class="button-container">
         <button  class='button' id="leaderboard-button">Go to Leaderboard</button>
     </div>
+    {% endblock %}
+    {% block images %}
     <div class="images">    
         <img src="{{ url_for('static', filename='images/adam.png') }}">
         <img src="{{ url_for('static', filename='images/adam2.png') }}">
     </div>
-{% endblock %}
+    {% endblock %}

@@ -11,12 +11,17 @@
   </head>
 
   <body>
-    <div class="header">
-      <h1> Adam Sandler Wordle </h1>
-      {% block header %}{% endblock %}
+    <img id="background" src="{{ url_for('static', filename='images/background2.png') }}"/>
+    <img id="mobile-background" src="{{ url_for('static', filename='images/mobile-background.png') }}"/>
+    <div class="page-content">
+      <div class="header">
+        <h1> Adam Sandler Wordle </h1>
+        {% block header %}{% endblock %}
+      </div>
+        {% block content %}{% endblock %}
+        <button id='username-button' class='button' onclick="setUsername()">Set Username</button>
     </div>
-    {% block content %}{% endblock %}
-    <button id='username-button' class='button' onclick="setUsername()">Set Username</button>
+    {% block images %}{% endblock %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/cookies.js') }}"></script>
   </body>

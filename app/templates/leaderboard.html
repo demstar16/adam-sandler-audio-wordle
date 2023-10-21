@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block header %}
-<p>Welcome to the Leaderboard! Now are you a real fan??</p>
+<p>Welcome to the Leaderboard!<br> Now are you a real fan??</p>
 {% endblock %}
 {% block content %}
 <div class="leaderboard">
@@ -19,6 +19,8 @@
         <button id='home-button' class='button'>Return to Home Page</button>
     </a>
 </div>
+{% endblock %}
+{% block images %}
 <div class="images">    
     <img src="{{ url_for('static', filename='images/adam3.png') }}">
     <img id='wedding-singer-img' src="{{ url_for('static', filename='images/adam4.png') }}">
