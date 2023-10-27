@@ -283,4 +283,8 @@ iframe {
 		display: flex;
 		flex-direction: column;
 	}
+
+	#top10 h1 {
+		font-size: 24px;
+	}
   }
